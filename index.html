@@ -1,10 +1,13 @@
+
+<!doctype html>
 <html>
     <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <style>
-        .margin{
+        .full-width{
+            width: 100%;
             margin: 10px 0px;
         }
         .containery{
@@ -31,7 +34,8 @@
                 </div>
             </div>
         </div>
-        <div class="row image">
+        <div class="row">
+            <img class="full-width rounded">
         </div>
         <div class="row download">
         </div>
@@ -75,10 +79,8 @@
             if (this.readyState == 4 && this.status == 200) {
               let pic = JSON.parse(this.responseText);
               let str = pic['user']['hd_profile_pic_url_info']['url']
-              let img = document.createElement('img');
-              img.setAtrribute('class','img-fluid margin');
+              let img = document.querySelector('img');
               img.src = str;
-              (document.querySelector('.image')).appendChild(img);
               donwloadBtn(str);
               // console.log(pic.user[]);
               console.log(pic['user']['hd_profile_pic_url_info']['url']);
@@ -98,7 +100,6 @@
             node.innerHTML = '';
             let btn = document.createElement('a');
             btn.setAttribute('class','btn btn-block btn-primary');
-            btn.setAttribute('download');
             btn.innerHTML = 'Descargar';
             btn.href = str;
             node.appendChild(btn);
