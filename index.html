@@ -1,0 +1,108 @@
+<html>
+    <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        .full-width{
+            width: 100%;
+            margin: 10px 0px;
+        }
+        .containery{
+            padding: 50px 20px;
+            max-width: 600px;
+            margin:  auto;
+            display: block;
+        }
+        
+    </style>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+    </head>
+    <body>
+    <div class="containery">
+        <div class="row">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Username ID" id="name" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="btn">Find</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <img class="full-width rounded">
+        </div>
+        <div class="row download">
+        </div>
+    </div>
+    </body>
+        <script type="text/javascript">
+        document.onkeydown=function(evt){
+        let keyCode = evt ? (evt.which ? evt.which : evt.keyCode) : event.keyCode;
+            if(keyCode == 13){
+                document.getElementById('btn').click();
+            }
+        }
+        let button = document.querySelector('#btn');
+      
+        function getUserId(url) {
+      
+          let str = '';
+          let xhr = new XMLHttpRequest();
+          xhr.open('GET', url);
+      
+          xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              let url = JSON.parse(this.responseText);
+              str += url['logging_page_id'];
+              str = 'https://i.instagram.com/api/v1/users/' + (str.match(/\d+/)[0]) + '/info/';
+              console.log(str);
+              getPicture(str);
+            }
+          }
+      
+          xhr.send();
+      
+        }
+      function getPicture(url) {
+      
+          let xhr = new XMLHttpRequest();
+      
+          xhr.open('GET', url);
+      
+          xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              let pic = JSON.parse(this.responseText);
+              let str = pic['user']['hd_profile_pic_url_info']['url']
+              let img = document.querySelector('img');
+              img.src = str;
+              donwloadBtn(str);
+              // console.log(pic.user[]);
+              console.log(pic['user']['hd_profile_pic_url_info']['url']);
+      
+            }
+          }
+          xhr.send();
+        }
+      
+        button.addEventListener('click', function() {
+          let name = document.querySelector('#name').value;
+          let url = 'https://www.instagram.com/' + name + '/?__a=1';
+          getUserId(url);
+        });
+        function donwloadBtn(str){
+            let node = document.querySelector('.download');
+            node.innerHTML = '';
+            let btn = document.createElement('a');
+            btn.setAttribute('class','btn btn-block btn-primary');
+            btn.innerHTML = 'Descargar';
+            btn.href = str;
+            node.appendChild(btn);
+
+        }
+        </script>
+      </html>
+      
