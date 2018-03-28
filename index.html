@@ -14,11 +14,10 @@
         }
         img{
             width: 100%;
-            height: 400px;
         }
         .containery{
             padding: 20px;
-            max-width: 400px;
+            max-width: 500px;
             margin:  auto;
             display: block;
             max-height: 100vh;
@@ -111,8 +110,13 @@
       
         button.addEventListener('click', function() {
           let name = document.querySelector('#name').value;
-          let url = 'https://www.instagram.com/' + name + '/?__a=1';
-          getUserId(url);
+            let url = 'https://www.instagram.com/' + name + '/?__a=1';
+            if ((/https/).test(name)) {
+                getPictureByUrl(name);
+            }
+            else {
+                getUserId(url);
+            }
         });
         function donwloadBtn(str){
             let node = document.querySelector('.download');
@@ -156,6 +160,21 @@
             let url = document.querySelector('.url').value;
             download(document.body.outerHTML, url, "text/html");
         }
+            function getPictureByUrl(url) {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', url);
+            xhr.onreadystatechange = function () {
+
+                if (this.readyState == 4 && this.status == 200) {
+                    let str = (this.responseText).match(/https:.*?\.jpg/g)[1];
+                    console.log(str);
+                    document.querySelector('img').src=str;
+                    donwloadBtn(str);
+                }
+            }
+
+            xhr.send();
+        } 
         </script>
       </html>
       
